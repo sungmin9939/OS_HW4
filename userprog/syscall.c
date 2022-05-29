@@ -90,7 +90,7 @@ syscall_handler (struct intr_frame *f UNUSED)
         //f->eax = mmap ((int) f->esp + 4, (void *) f->esp + 8);
         break;
     case SYS_MUNMAP:
-        //munmap((mapid_t) f->esp + 4);
+        //munmap((int) f->esp + 4);
         break;
   }
 }
@@ -239,16 +239,16 @@ void close (int fd) {
 
 
 // // mmap, munmap 추가
-// mapid_t 
+// int 
 // mmap (int fd, void * upage)
 // {
-//   struct file * f = get_file(fd);
+//   struct file * f = thread_current()->fd[fd];
 //   uint32_t read_bytes = file_length (f);
 //   int num_of_page = read_bytes / PGSIZE + 1;
 
 //   int i;
 //   thread_current()->map_id++;
-//   mapid_t id = thread_current()->map_id;
+//   int id = thread_current()->map_id;
 
 //   off_t offset = 0;
 
@@ -289,7 +289,7 @@ void close (int fd) {
 //   return id;
 // }
 
-// void munmap(mapid_t mapping)
+// void munmap(int mapping)
 // {
 
 //   struct list * map_list = &(thread_current()->mmap_file_list);
@@ -318,4 +318,17 @@ void close (int fd) {
 //   }
 
 //   thread_current()->map_id--;
+// }
+
+
+// bool 
+// add_to_mmap_file_list(struct s_page_table_entry * s_pt_entry)
+// {
+//   struct map_item * item = malloc(sizeof(struct map_item));
+//   if(item == NULL) return false;
+//   struct thread * t = thread_current();
+//   item->s_pt_entry = s_pt_entry;
+//   item->map_id = t->map_id;
+//   list_push_back(&t->mmap_file_list, &item->elem);
+//   return true;
 // }

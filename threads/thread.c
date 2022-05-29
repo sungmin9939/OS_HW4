@@ -105,7 +105,6 @@ thread_init (void)
 
   #ifdef VM
   //list_init(&ft_list);
-	//lock_init(&ft_lock);
   #endif
 }
 
